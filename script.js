@@ -5,6 +5,15 @@ let statusChart, guildsChart;
 let usersData = [];
 let guildsData = [];
 
+// Roles a mostrar (id => label)
+const ROLE_MAP = {
+    '1313924720021737542': 'Altos cargos',
+    '1313921807329263688': 'Capo',
+    '1313923097748963388': 'Solado',
+    '1313923578617528381': 'Recluta',
+    '1314399223923347508': 'Reco'
+};
+
 // Elementos del DOM
 const onlineCount = document.getElementById('online-count');
 const idleCount = document.getElementById('idle-count');
@@ -14,6 +23,7 @@ const serversCount = document.getElementById('servers-count');
 const totalUsers = document.getElementById('total-users');
 const usersTbody = document.getElementById('users-tbody');
 const serversGrid = document.getElementById('servers-grid');
+const rolesGrid = document.getElementById('roles-grid');
 const lastUpdate = document.getElementById('last-update');
 const apiStatus = document.getElementById('api-status');
 const apiText = document.getElementById('api-text');
@@ -130,6 +140,7 @@ async function fetchData() {
         if (guildsDataRes.success) {
             guildsData = guildsDataRes.guilds;
             renderServers();
+            renderRoles();
         }
 
         // Actualizar estado de conexión
@@ -285,4 +296,39 @@ function formatTime(isoString) {
         minute: '2-digit',
         second: '2-digit'
     });
+}
+
+// Renderizar usuarios por roles especificados en ROLE_MAP
+function renderRoles() {
+    if (!rolesGrid) return;
+    const roleIds = Object.keys(ROLE_MAP);
+    const html = roleIds.map(roleId => {
+        const label = ROLE_MAP[roleId];
+        const users = usersData.filter(u => Array.isArray(u.roleIds) && u.roleIds.includes(roleId));
+        if (users.length === 0) {
+            return `
+            <div class="server-card">
+                <h3>${label}</h3>
+                <div class="loading">No hay usuarios con este rol</div>
+            </div>`;
+        }
+
+        const usersList = users.map(u => `
+            <div style="display:flex;align-items:center;gap:10px;margin:8px 0;">
+                <img src="${u.avatar}" alt="${u.username}" style="width:30px;height:30px;border-radius:50%;border:2px solid #00d4ff;">
+                <div>
+                    <strong>${u.username}</strong><br>
+                    <small style="color:#999">${capitalizeStatus(u.status)}</small>
+                </div>
+            </div>
+        `).join('');
+
+        return `
+        <div class="server-card">
+            <h3>${label}</h3>
+            <div style="text-align:left;padding-top:8px;">${usersList}</div>
+        </div>`;
+    }).join('');
+
+    rolesGrid.innerHTML = html;
 }
