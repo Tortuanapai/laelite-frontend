@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaElite - Discord Status Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🎮 LaElite Status Monitor</h1>
+                <p>Monitor de actividad en tiempo real</p>
+            </div>
+            <div class="status-indicator">
+                <span id="api-status" class="status-dot offline"></span>
+                <span id="api-text">Conectando...</span>
+            </div>
+        </header>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon online">👥</div>
+                <div class="stat-content">
+                    <p class="stat-label">Online</p>
+                    <h3 id="online-count">0</h3>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon idle">⏱️</div>
+                <div class="stat-content">
+                    <p class="stat-label">Inactivos</p>
+                    <h3 id="idle-count">0</h3>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon dnd">🔴</div>
+                <div class="stat-content">
+                    <p class="stat-label">No disponible</p>
+                    <h3 id="dnd-count">0</h3>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon offline">⚫</div>
+                <div class="stat-content">
+                    <p class="stat-label">Offline</p>
+                    <h3 id="offline-count">0</h3>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon servers">🏢</div>
+                <div class="stat-content">
+                    <p class="stat-label">Servidores</p>
+                    <h3 id="servers-count">0</h3>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon users">👫</div>
+                <div class="stat-content">
+                    <p class="stat-label">Total Usuarios</p>
+                    <h3 id="total-users">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-container">
+            <div class="chart-box">
+                <h2>Estado de Usuarios</h2>
+                <canvas id="statusChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h2>Distribución por Servidor</h2>
+                <canvas id="guildsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Users Table -->
+        <div class="users-section">
+            <div class="section-header">
+                <h2>👥 Usuarios Conectados</h2>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="online">Online</button>
+                    <button class="filter-btn" data-filter="idle">Inactivos</button>
+                    <button class="filter-btn" data-filter="dnd">No disponible</button>
+                    <button class="filter-btn" data-filter="offline">Offline</button>
+                </div>
+            </div>
+
+            <div class="users-table-wrapper">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Estado</th>
+                            <th>Actividad</th>
+                            <th>Servidor</th>
+                            <th>Última vez visto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-tbody">
+                        <tr>
+                            <td colspan="5" class="loading">Cargando usuarios...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Servers Section -->
+        <div class="servers-section">
+            <h2>🏢 Servidores</h2>
+            <div class="servers-grid" id="servers-grid">
+                <div class="loading">Cargando servidores...</div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Última actualización: <span id="last-update">--:--:--</span></p>
+            <p>API: <span id="api-url">http://localhost:3000</span></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

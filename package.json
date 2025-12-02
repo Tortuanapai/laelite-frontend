@@ -1,0 +1,13 @@
+{
+  "name": "laelite-frontend",
+  "version": "1.0.0",
+  "description": "Discord Status Dashboard Frontend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["discord", "dashboard"],
+  "author": "",
+  "license": "ISC"
+}
